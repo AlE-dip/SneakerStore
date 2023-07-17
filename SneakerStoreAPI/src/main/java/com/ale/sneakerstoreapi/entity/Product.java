@@ -22,7 +22,8 @@ public class Product {
     private String productCode;
     private String name;
     private String description;
+    private double discount;
 
-//    @DBRef(lazy = true)
+    @DBRef(lazy = true)
     private List<ProductDetail> productDetails;
 }

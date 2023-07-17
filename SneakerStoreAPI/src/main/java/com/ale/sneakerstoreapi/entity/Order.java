@@ -21,7 +21,7 @@ public class Order {
     @MongoId
     private ObjectId id;
     private String orderId;
-    private Date date;
+    private double total;
 
     @DBRef
     private List<OrderDetail> orderDetails;

@@ -11,7 +11,6 @@ import com.ale.sneakerstoreapi.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,15 @@ public class SneakerStoreApiApplication {
 		ProductDetailService productDetailService = context.getBean(ProductDetailService.class);
 		ProductSizeService productSizeService = context.getBean(ProductSizeService.class);
 
+		if(userService.findFirst() == null) {
+			userService.save(
+					new User().builder()
+							.username("admin")
+							.password("admin")
+							.role(User.Role.ADMIN)
+							.build()
+			);
+		}
 //		userService.save(new User(null, "a", "a", "a"));
 //
 //
@@ -49,8 +57,6 @@ public class SneakerStoreApiApplication {
 //						.build()
 //		);
 
-		List<Product> products = productService.findAll();
-		products.size();
 
 	}
 
