@@ -1,10 +1,13 @@
 package com.ale.sneakerstoreapi.mapper.view;
 
 import com.ale.sneakerstoreapi.entity.Product;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -21,7 +24,8 @@ public class ProductView {
 
     private List<ProductDetailView> productDetails;
 
-    public static ProductView toProductView(Product product){
+    public static ProductView newInstance(Product product){
+
         return new ProductView().builder()
                 .id(product.getId().toString())
                 .productCode(product.getProductCode())
@@ -29,8 +33,22 @@ public class ProductView {
                 .description(product.getDescription())
                 .discount(product.getDiscount())
                 .productDetails(product.getProductDetails().stream()
-                        .map(ProductDetailView::toProductDetailView)
+                        .map(ProductDetailView::newInstance)
                         .toList())
+                .build();
+
+    }
+
+    public static Product toProduct(ProductView productView){
+        return new Product().builder()
+//                .id(new ObjectId(productView.getId()))
+                .productCode(productView.getProductCode())
+                .name(productView.getName())
+                .description(productView.getDescription())
+                .discount(productView.getDiscount())
+//                .productDetails(productView.getProductDetails().stream()
+//                        .map(ProductDetailView::toProductDetailView)
+//                        .toList())
                 .build();
 
     }

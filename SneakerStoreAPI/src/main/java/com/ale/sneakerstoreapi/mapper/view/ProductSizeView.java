@@ -16,7 +16,7 @@ public class ProductSizeView {
     private int quantity;
     private double price;
 
-    public static ProductSizeView toProductSizeView(ProductSize productSize){
+    public static ProductSizeView newInstance(ProductSize productSize){
         return new ProductSizeView().builder()
                 .id(productSize.getId().toString())
                 .size(productSize.getSize())

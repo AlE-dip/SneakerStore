@@ -1,7 +1,11 @@
-package com.ale.sneakerstoreapi.util;
+package com.ale.sneakerstoreapi.util.exception;
 
+import com.ale.sneakerstoreapi.util.MessageContent;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

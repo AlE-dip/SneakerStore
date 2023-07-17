@@ -1,4 +1,4 @@
-package com.ale.sneakerstoreapi.util;
+package com.ale.sneakerstoreapi.util.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
