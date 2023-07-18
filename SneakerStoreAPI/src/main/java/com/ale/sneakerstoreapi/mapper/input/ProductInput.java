@@ -33,26 +33,28 @@ public class ProductInput {
                         .map(ProductDetailInput::toProductDetailInsert)
                         .toList()
                 : new ArrayList<>();
-        return toProduct(productInput, productDetails);
-    }
-
-    public static Product toProductUpdate(ProductInput productInput) {
-        List<ProductDetail> productDetails = productInput.getProductDetails() != null
-                ? productInput.getProductDetails().stream()
-                .map(ProductDetailInput::toProductDetailUpdate)
-                .toList()
-                : new ArrayList<>();
-        return toProduct(productInput, productDetails);
-    }
-
-    public static Product toProduct(ProductInput productInput, List<ProductDetail> productDetails) {
         String productCode = UtilContent.PRODUCT_CODE_FORMAT + System.currentTimeMillis();
+        return toProduct(productInput, productDetails, productCode);
+    }
+
+    public static Product toProduct(ProductInput productInput, List<ProductDetail> productDetails, String productCode) {
         return new Product().builder()
                 .name(productInput.getName())
                 .productCode(productCode)
                 .description(productInput.getDescription())
                 .discount(productInput.getDiscount())
                 .productDetails(productDetails)
+                .build();
+    }
+
+    public static Product toProductUpdate(ProductInput productInput, Product product) {
+        return new Product().builder()
+                .id(product.getId())
+                .name(productInput.getName())
+                .productCode(product.getProductCode())
+                .description(productInput.getDescription())
+                .discount(productInput.getDiscount())
+                .productDetails(product.getProductDetails())
                 .build();
     }
 }

@@ -24,6 +24,9 @@ public class OrderDetail {
     @DBRef(lazy = true)
     private ProductDetail productDetail;
 
+    @DBRef(lazy = true)
+    private ProductSize productSize;
+
     private int quantity;
     private double price;
 
