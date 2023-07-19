@@ -1,33 +1,33 @@
 package com.ale.sneakerstoreapi.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetail {
-    @MongoId
-    private ObjectId id;
-
-    @DBRef(lazy = true)
-    private Product product;
-
-    @DBRef(lazy = true)
-    private ProductDetail productDetail;
-
-    @DBRef(lazy = true)
-    private ProductSize productSize;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int quantity;
     private double price;
+    private double discount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductDetail productDetail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductSize productSize;
 }

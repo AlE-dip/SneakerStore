@@ -6,12 +6,9 @@ import com.ale.sneakerstoreapi.security.JwtAuthenticationFilter;
 import com.ale.sneakerstoreapi.security.JwtTokenProvider;
 import com.ale.sneakerstoreapi.service.UserService;
 import com.ale.sneakerstoreapi.service.UserServiceImpl;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,12 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +33,6 @@ public class SecurityConfig {
 
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private UserService userService;
-    private AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenProvider tokenProvider, UserService userService){

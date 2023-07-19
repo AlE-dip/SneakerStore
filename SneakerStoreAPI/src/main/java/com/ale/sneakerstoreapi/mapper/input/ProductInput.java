@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,34 +28,19 @@ public class ProductInput {
     @Valid
     public List<ProductDetailInput> productDetails;
 
-    public static Product toProductInsert(ProductInput productInput) {
-        List<ProductDetail> productDetails = productInput.getProductDetails() != null
-                ? productInput.getProductDetails().stream()
-                        .map(ProductDetailInput::toProductDetailInsert)
+    public Product toProduct(ModelMapper mapper) {
+        Product product = mapper.map(this, Product.class);
+        List<ProductDetail> productDetails = this.productDetails != null
+                ? this.productDetails.stream()
+                        .map(productDetailInput -> {
+                            ProductDetail productDetail = productDetailInput.toProductDetail(mapper);
+                            productDetail.setProduct(product);
+                            return productDetail;
+                        })
                         .toList()
                 : new ArrayList<>();
-        String productCode = UtilContent.PRODUCT_CODE_FORMAT + System.currentTimeMillis();
-        return toProduct(productInput, productDetails, productCode);
+        product.setProductDetails(productDetails);
+        return product;
     }
 
-    public static Product toProduct(ProductInput productInput, List<ProductDetail> productDetails, String productCode) {
-        return new Product().builder()
-                .name(productInput.getName())
-                .productCode(productCode)
-                .description(productInput.getDescription())
-                .discount(productInput.getDiscount())
-                .productDetails(productDetails)
-                .build();
-    }
-
-    public static Product toProductUpdate(ProductInput productInput, Product product) {
-        return new Product().builder()
-                .id(product.getId())
-                .name(productInput.getName())
-                .productCode(product.getProductCode())
-                .description(productInput.getDescription())
-                .discount(productInput.getDiscount())
-                .productDetails(product.getProductDetails())
-                .build();
-    }
 }

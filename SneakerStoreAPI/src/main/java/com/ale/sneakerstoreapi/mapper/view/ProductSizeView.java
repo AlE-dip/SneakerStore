@@ -5,23 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductSizeView {
-    private String id;
+    private Long id;
     private ProductSize.Size size;
-    private int quantity;
+    private int inventory;
     private double price;
 
-    public static ProductSizeView newInstance(ProductSize productSize){
-        return new ProductSizeView().builder()
-                .id(productSize.getId().toString())
-                .size(productSize.getSize())
-                .quantity(productSize.getQuantity())
-                .price(productSize.getPrice())
-                .build();
+    public static ProductSizeView newInstance(ProductSize productSize, ModelMapper mapper){
+        ProductSizeView productSizeView = mapper.map(productSize, ProductSizeView.class);
+        return productSizeView;
     }
 }

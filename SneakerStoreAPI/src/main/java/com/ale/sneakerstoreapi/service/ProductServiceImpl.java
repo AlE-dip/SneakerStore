@@ -12,10 +12,9 @@ import com.ale.sneakerstoreapi.util.UtilContent;
 import com.ale.sneakerstoreapi.repository.ProductRepository;
 import com.ale.sneakerstoreapi.util.exception.AppException;
 import lombok.AllArgsConstructor;
-import org.bson.types.ObjectId;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,34 +25,28 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private ProductSizeRepository productSizeRepository;
     private ProductDetailRepository productDetailRepository;
+    private ModelMapper mapper;
 
     @Override
-    public ProductView insert(ProductInput productInput) {
-        Product product = ProductInput.toProductInsert(productInput);
-
-        //Add ProductSize
-        List<ProductSize> productSizes = new ArrayList<>();
-        product.getProductDetails().forEach(productDetail -> {
-            productSizes.addAll(productDetail.getProductSizes());
-        });
-        productSizeRepository.saveAll(productSizes);
-
-        //Add ProductDetail
-        productDetailRepository.saveAll(product.getProductDetails());
-
+    public ProductView create(ProductInput productInput) {
+        Product product = productInput.toProduct(mapper);
 
         productRepository.save(product);
+//        productRepository.updateProductCode(
+//                product.getId(),
+//                UtilContent.generateCode(UtilContent.PRODUCT_CODE_FORMAT, product.getId())
+//        );
 
-        return ProductView.newInstance(product);
+        return ProductView.newInstance(product, mapper);
     }
 
     @Override
-    public ProductView update(ProductInput productInput, ObjectId objectId) {
+    public ProductView update(ProductInput productInput, Long Long) {
         AtomicReference<ProductView> atomicReference = new AtomicReference<>();
-        productRepository.findById(objectId).ifPresentOrElse(product -> {
-            Product productUpdate = ProductInput.toProductUpdate(productInput, product);
+        productRepository.findById(Long).ifPresentOrElse(product -> {
+            Product productUpdate = productInput.toProduct(mapper);
             productRepository.save(productUpdate);
-            atomicReference.set(ProductView.newInstance(productUpdate));
+            atomicReference.set(ProductView.newInstance(productUpdate, mapper));
         }, () -> {
             throw new AppException(MessageContent.ID_DOES_NOT_EXIST);
         });
@@ -64,7 +57,16 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductView> findAll(QueryRequest queryRequest) {
         PageRequest pageRequest = UtilContent.pageRequest(queryRequest);
         return productRepository.findAll(pageRequest).stream()
-                .map(ProductView::newInstance)
+                .map(product -> ProductView.newInstance(product, mapper))
                 .toList();
+    }
+
+    @Override
+    public Product findById(Long id) {
+        AtomicReference<Product> atomicReference = new AtomicReference<>();
+        productRepository.findById(id).ifPresentOrElse(atomicReference::set, () -> {
+            throw new AppException(MessageContent.ID_DOES_NOT_EXIST + Product.class.getName());
+        });
+        return atomicReference.get();
     }
 }

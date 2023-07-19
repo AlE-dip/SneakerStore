@@ -5,8 +5,11 @@ import com.ale.sneakerstoreapi.mapper.view.AuthRequest;
 import com.ale.sneakerstoreapi.mapper.view.UserView;
 import com.ale.sneakerstoreapi.security.JwtTokenProvider;
 import com.ale.sneakerstoreapi.security.UserInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.aspectj.apache.bcel.classfile.ModuleMainClass;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ public class AuthController {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ModelMapper mapper;
 
     @PostMapping("login")
     public ResponseEntity login(@Valid @RequestBody AuthRequest request) {

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,43 +21,31 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDetailInput {
-    protected String id;
     @ValueOfEnum(enumClazz = ProductDetail.Color.class)
-    protected String color;
+    private String color;
     @NotBlank
-    protected String imageUrl;
-    protected List<String> imageUrlDetails;
+    private String imageUrl;
+//    private List<String> imageUrlDetails;
 
     @Valid
     @NotEmpty
-    protected List<ProductSizeInput> productSizes;
+    private List<ProductSizeInput> productSizes;
 
-    public static ProductDetail toProductDetailInsert(ProductDetailInput productDetailInput){
-        List<ProductSize> productSizes = productDetailInput.getProductSizes() != null
-                ? productDetailInput.getProductSizes().stream()
-                        .map(ProductSizeInput::toProductSizeInsert)
+    public ProductDetail toProductDetail(ModelMapper mapper){
+        ProductDetail productDetail = mapper.map(this, ProductDetail.class);
+
+        List<ProductSize> productSizes = this.productSizes != null
+                ? this.productSizes.stream()
+                        .map(productSizeInput -> {
+                            ProductSize productSize = productSizeInput.toProductSize(mapper);
+                            productSize.setProductDetail(productDetail);
+                            return productSize;
+                        })
                         .toList()
                 : new ArrayList<>();
-        return toProductDetail(productDetailInput, productSizes);
-    }
 
-    public static ProductDetail toProductDetailUpdate(ProductDetailInput productDetailInput) {
-        List<ProductSize> productSizes = productDetailInput.getProductSizes() != null
-                ? productDetailInput.getProductSizes().stream()
-                .map(ProductSizeInput::toProductSizeInsert)
-                .toList()
-                : new ArrayList<>();
-        ProductDetail productDetail = toProductDetail(productDetailInput, productSizes);
-        productDetail.setId(UtilContent.parseObjectId(productDetailInput.getId()));
+        productDetail.setColor(Enum.valueOf(ProductDetail.Color.class, color));
+        productDetail.setProductSizes(productSizes);
         return productDetail;
-    }
-
-    public static ProductDetail toProductDetail(ProductDetailInput productDetailInput, List<ProductSize> productSizes){
-        return new ProductDetail().builder()
-                .color(Enum.valueOf(ProductDetail.Color.class, productDetailInput.getColor()))
-                .imageUrl(productDetailInput.getImageUrl())
-                .imageUrlDetails(productDetailInput.getImageUrlDetails())
-                .productSizes(productSizes)
-                .build();
     }
 }

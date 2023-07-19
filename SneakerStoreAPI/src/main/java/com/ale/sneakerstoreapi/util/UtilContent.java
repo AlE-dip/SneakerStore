@@ -2,13 +2,13 @@ package com.ale.sneakerstoreapi.util;
 
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.util.exception.AppException;
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 public class UtilContent {
     public static final String PRODUCT_CODE_FORMAT = "P";
+    public static final String ORDER_NUMBER_FORMAT = "O";
     public static final String DESC = "DESC";
     public static final String ASC = "ASC";
 
@@ -32,11 +32,7 @@ public class UtilContent {
         return pageRequest;
     }
 
-    public static ObjectId parseObjectId(String id){
-        ObjectId objectId = StringUtils.hasText(id)
-                ? new ObjectId(id)
-                : null;
-        return objectId;
+    public static String generateCode(String prefix, Long  id) {
+        return prefix + String.format("%010d", id);
     }
-
 }

@@ -1,31 +1,35 @@
 package com.ale.sneakerstoreapi.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-import org.springframework.validation.annotation.Validated;
+import org.hibernate.annotations.GeneratedColumn;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
-@Document
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    @MongoId
-    private ObjectId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
+    @GeneratedColumn(value = "")
     private String productCode;
     private String name;
     private String description;
     private double discount;
 
-    @DBRef(lazy = true)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductDetail> productDetails;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<OrderDetail> orderDetails;
 }

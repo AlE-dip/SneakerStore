@@ -1,24 +1,26 @@
 package com.ale.sneakerstoreapi.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductSize {
-    @MongoId
-    private ObjectId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Size size;
-    private int quantity;
+    private int inventory;
     private double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductDetail productDetail;
 
     public enum Size {
         _40,
@@ -28,6 +30,8 @@ public class ProductSize {
         _44,
         _45,
         _46,
-
+        _47,
+        _48,
+        _49
     }
 }

@@ -1,28 +1,29 @@
 package com.ale.sneakerstoreapi.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
 import java.util.List;
 
-@Document
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDetail {
-    @MongoId
-    private ObjectId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Color color;
     private String imageUrl;
-    private List<String> imageUrlDetails;
-    @DBRef
+//    private List<String> imageUrlDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+    @OneToMany(mappedBy = "productDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductSize> productSizes;
 
 
@@ -31,6 +32,7 @@ public class ProductDetail {
         BLUE,
         RED,
         BLACK,
-        YELLOW
+        YELLOW,
+        PINK
     }
 }

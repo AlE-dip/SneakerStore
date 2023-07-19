@@ -3,12 +3,15 @@ package com.ale.sneakerstoreapi.service;
 import com.ale.sneakerstoreapi.entity.User;
 import com.ale.sneakerstoreapi.repository.UserRepository;
 import com.ale.sneakerstoreapi.security.UserInfo;
+import com.ale.sneakerstoreapi.util.MessageContent;
+import com.ale.sneakerstoreapi.util.exception.AppException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -32,6 +35,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findFirst() {
-        return userRepository.findFirstByOrderByIdAsc();
+        return userRepository.findFirstByOrderByUuidAsc();
+    }
+
+    @Override
+    public User findById(UUID uuid) {
+        AtomicReference<User> atomicReference = new AtomicReference<>();
+        userRepository.findById(uuid).ifPresentOrElse(atomicReference::set, () -> {
+            throw new AppException(MessageContent.ID_DOES_NOT_EXIST + User.class.getName());
+        });
+        return atomicReference.get();
     }
 }
