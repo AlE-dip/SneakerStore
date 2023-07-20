@@ -3,6 +3,7 @@ package com.ale.sneakerstoreapi.controller;
 import com.ale.sneakerstoreapi.entity.User;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.ProductInput;
+import com.ale.sneakerstoreapi.mapper.update.ProductUpdate;
 import com.ale.sneakerstoreapi.mapper.view.ProductView;
 import com.ale.sneakerstoreapi.service.ProductService;
 import jakarta.annotation.security.RolesAllowed;
@@ -26,6 +27,13 @@ public class ProductController {
         return products;
     }
 
+    @GetMapping("/{productCode}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductView getProduct(@PathVariable String productCode) {
+        ProductView product = productService.getByProductCode(productCode);
+        return product;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ProductView insertProducts(@Valid @RequestBody ProductInput productInput) {
@@ -33,13 +41,13 @@ public class ProductController {
         return products;
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{productCode}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductView updateProducts(
-            @Valid @RequestBody ProductInput productInput,
-            @PathVariable Long id
+    public ProductUpdate updateProducts(
+            @Valid @RequestBody ProductUpdate productUpdate,
+            @PathVariable String productCode
     ) {
-        ProductView products = productService.update(productInput, id);
+        ProductUpdate products = productService.update(productUpdate, productCode);
         return products;
     }
 }

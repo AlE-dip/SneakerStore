@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductView {
-    private Long id;
     private String productCode;
     private String name;
     private String description;
@@ -25,12 +24,7 @@ public class ProductView {
 
     public static ProductView newInstance(Product product, ModelMapper mapper){
         ProductView productView = mapper.map(product, ProductView.class);
-        productView.setProductDetails(product.getProductDetails().stream()
-                .map(productDetail -> ProductDetailView.newInstance(productDetail, mapper))
-                .toList()
-        );
         return productView;
-
     }
 
 }

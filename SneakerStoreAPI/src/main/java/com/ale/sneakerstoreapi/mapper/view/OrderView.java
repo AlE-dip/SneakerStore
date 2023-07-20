@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
@@ -16,22 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderView {
-    private Long id;
     private String orderNumber;
     private double total;
     private List<OrderDetailView> orderDetails;
-    private String userId;
+    private String userUuid;
 
-//    public static OrderView newInstance(Order order){
-//        return new OrderView().builder()
-//                .id(order.getId().toString())
-//                .orderNumber(order.getOrderNumber())
-//                .total(order.getTotal())
-//                .orderDetails(order.getOrderDetails().stream()
-//                        .map(OrderDetailView::newInstance)
-//                        .toList()
-//                )
-//                .userId(order.getUser().getId().toString())
-//                .build();
-//    }
+    public static OrderView newInstance(Order order, ModelMapper mapper){
+        OrderView orderView = mapper.map(order, OrderView.class);
+        return orderView;
+    }
 }

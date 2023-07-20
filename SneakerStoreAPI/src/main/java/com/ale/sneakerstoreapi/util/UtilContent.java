@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 
 public class UtilContent {
     public static final String PRODUCT_CODE_FORMAT = "P";
-    public static final String ORDER_NUMBER_FORMAT = "O";
+    public static final String ORDER_NUMBER_FORMAT = "OD";
     public static final String DESC = "DESC";
     public static final String ASC = "ASC";
 

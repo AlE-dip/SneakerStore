@@ -1,8 +1,8 @@
 package com.ale.sneakerstoreapi.service;
 
-import com.ale.sneakerstoreapi.entity.ProductSize;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.ProductInput;
+import com.ale.sneakerstoreapi.mapper.update.ProductUpdate;
 import com.ale.sneakerstoreapi.mapper.view.ProductView;
 import com.ale.sneakerstoreapi.entity.Product;
 import com.ale.sneakerstoreapi.repository.ProductDetailRepository;
@@ -15,8 +15,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -32,21 +32,23 @@ public class ProductServiceImpl implements ProductService {
         Product product = productInput.toProduct(mapper);
 
         productRepository.save(product);
-//        productRepository.updateProductCode(
-//                product.getId(),
-//                UtilContent.generateCode(UtilContent.PRODUCT_CODE_FORMAT, product.getId())
-//        );
+        String productCode = UtilContent.generateCode(UtilContent.PRODUCT_CODE_FORMAT, product.getId());
+        productRepository.updateProductCode(
+                product.getId(),
+                productCode
+        );
+        product.setProductCode(productCode);
 
         return ProductView.newInstance(product, mapper);
     }
 
     @Override
-    public ProductView update(ProductInput productInput, Long Long) {
-        AtomicReference<ProductView> atomicReference = new AtomicReference<>();
-        productRepository.findById(Long).ifPresentOrElse(product -> {
-            Product productUpdate = productInput.toProduct(mapper);
-            productRepository.save(productUpdate);
-            atomicReference.set(ProductView.newInstance(productUpdate, mapper));
+    public ProductUpdate update(ProductUpdate productUpdate, String productCode) {
+        AtomicReference<ProductUpdate> atomicReference = new AtomicReference<>();
+        productRepository.findFirstByProductCode(productCode).ifPresentOrElse(product -> {
+            productUpdate.updateProduct(product);
+            productRepository.save(product);
+            atomicReference.set(ProductUpdate.newInstance(product, mapper));
         }, () -> {
             throw new AppException(MessageContent.ID_DOES_NOT_EXIST);
         });
@@ -68,5 +70,20 @@ public class ProductServiceImpl implements ProductService {
             throw new AppException(MessageContent.ID_DOES_NOT_EXIST + Product.class.getName());
         });
         return atomicReference.get();
+    }
+
+    @Override
+    public Product findByProductCode(String productCode) {
+        Optional<Product> optional = productRepository.findFirstByProductCode(productCode);
+        if(optional.isEmpty()) {
+            throw new AppException(MessageContent.ID_DOES_NOT_EXIST);
+        }
+        return optional.get();
+    }
+
+    @Override
+    public ProductView getByProductCode(String productCode) {
+        Product product = this.findByProductCode(productCode);
+        return ProductView.newInstance(product, mapper);
     }
 }

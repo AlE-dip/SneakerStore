@@ -1,6 +1,7 @@
 package com.ale.sneakerstoreapi.mapper.input;
 
 import com.ale.sneakerstoreapi.entity.Order;
+import com.ale.sneakerstoreapi.entity.OrderDetail;
 import com.ale.sneakerstoreapi.entity.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -26,9 +27,13 @@ public class OrderInput {
     private String userId;
 
     public Order toOrder(ModelMapper mapper){
-        Order order = mapper.map(this, Order.class);
+        Order order = new Order();
         order.setOrderDetails(orderDetails.stream()
-                .map(orderDetailInput -> orderDetailInput.toOrderDetail(mapper))
+                .map(orderDetailInput -> {
+                    OrderDetail orderDetail = orderDetailInput.toOrderDetail(mapper);
+                    orderDetail.setOrder(order);
+                    return orderDetail;
+                })
                 .toList()
         );
         order.setUser(new User().builder().uuid(UUID.fromString(userId)).build());

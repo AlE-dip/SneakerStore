@@ -4,10 +4,8 @@ import com.ale.sneakerstoreapi.entity.OrderDetail;
 import com.ale.sneakerstoreapi.entity.Product;
 import com.ale.sneakerstoreapi.entity.ProductDetail;
 import com.ale.sneakerstoreapi.entity.ProductSize;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -18,19 +16,19 @@ import org.modelmapper.ModelMapper;
 public class OrderDetailInput {
 
     @NotNull
-    private Long productId;
+    private String productCode;
     @NotNull
-    private Long productDetailId;
+    private Long productDetail;
     @NotNull
-    private Long productSizeId;
+    private Long productSize;
     @Positive
     private int quantity;
 
     public OrderDetail toOrderDetail(ModelMapper mapper) {
         OrderDetail orderDetail = mapper.map(this, OrderDetail.class);
-        orderDetail.setProduct(new Product().builder().id(productId).build());
-        orderDetail.setProductDetail(new ProductDetail().builder().id(productDetailId).build());
-        orderDetail.setProductSize(new ProductSize().builder().id(productSizeId).build());
+        orderDetail.setProduct(new Product().builder().productCode(productCode).build());
+        orderDetail.setProductDetail(new ProductDetail().builder().id(productDetail).build());
+        orderDetail.setProductSize(new ProductSize().builder().id(productSize).build());
         return orderDetail;
     }
 }

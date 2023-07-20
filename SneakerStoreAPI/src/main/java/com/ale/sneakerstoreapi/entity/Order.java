@@ -20,7 +20,7 @@ public class Order {
     private double total;
     private Date date;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)

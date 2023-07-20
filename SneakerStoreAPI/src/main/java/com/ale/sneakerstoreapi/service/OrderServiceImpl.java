@@ -3,15 +3,24 @@ package com.ale.sneakerstoreapi.service;
 import com.ale.sneakerstoreapi.entity.Order;
 import com.ale.sneakerstoreapi.entity.Product;
 import com.ale.sneakerstoreapi.entity.ProductSize;
+import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.OrderInput;
+import com.ale.sneakerstoreapi.mapper.input.OrderOwner;
 import com.ale.sneakerstoreapi.mapper.view.OrderView;
 import com.ale.sneakerstoreapi.repository.OrderRepository;
+import com.ale.sneakerstoreapi.util.MessageContent;
 import com.ale.sneakerstoreapi.util.UtilContent;
+import com.ale.sneakerstoreapi.util.exception.AppException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -28,15 +37,16 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public OrderView create(OrderInput orderInput) {
-        Order order = new Order();
+        Order order = orderInput.toOrder(mapper);
 
         AtomicReference<Double> total = new AtomicReference<>((double) 0);
         order.getOrderDetails().forEach(orderDetail -> {
-            //Update ProductSize
+            //reduce Inventory in ProductSize
             ProductSize productSize = orderDetail.getProductSize();
             productSizeService.reduceInventory(productSize.getId(), orderDetail.getQuantity());
 
-            Product product = productService.findById(orderDetail.getProduct().getId());
+            //Create OrderDetail
+            Product product = productService.findByProductCode(orderDetail.getProduct().getProductCode());
             orderDetail.setProduct(product);
             orderDetail.setDiscount(product.getDiscount());
 
@@ -46,8 +56,7 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setProductSize(productSize);
             orderDetail.setPrice(productSize.getPrice());
 
-            //Create OrderDetail
-            orderDetailService.create(orderDetail);
+//            orderDetailService.create(orderDetail);
 
             //Calculate total price
             double detailPrice = orderDetail.getPrice() * orderDetail.getQuantity();
@@ -60,7 +69,28 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.save(order);
 
-        OrderView orderView = new OrderView();
-        return orderView;
+        return OrderView.newInstance(order, mapper);
+    }
+
+    @Override
+    public List<OrderView> findAll(QueryRequest queryRequest, OrderOwner orderOwner) {
+        PageRequest pageRequest = UtilContent.pageRequest(queryRequest);
+        return orderRepository.findAllByUuid(UUID.fromString(orderOwner.getUuid()), pageRequest).stream()
+                .map(order -> OrderView.newInstance(order, mapper))
+                .toList();
+    }
+
+    @Override
+    public OrderView getByOrderNumber(String orderNumber, OrderOwner orderOwner) {
+        return OrderView.newInstance(findByOrderNumber(orderNumber, orderOwner), mapper);
+    }
+
+    @Override
+    public Order findByOrderNumber(String orderNumber, OrderOwner orderOwner) {
+        Optional<Order> optional = orderRepository.findFirstByOrderNumber(UUID.fromString(orderOwner.getUuid()), orderNumber);
+        if(optional.isEmpty()) {
+            throw new AppException(MessageContent.DOES_NOT_PERMISSION);
+        }
+        return optional.get();
     }
 }
