@@ -1,19 +1,14 @@
 package com.ale.sneakerstoreapi.controller;
 
-import com.ale.sneakerstoreapi.entity.User;
 import com.ale.sneakerstoreapi.mapper.view.AuthRequest;
 import com.ale.sneakerstoreapi.mapper.view.UserView;
 import com.ale.sneakerstoreapi.security.JwtTokenProvider;
 import com.ale.sneakerstoreapi.security.UserInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.aspectj.apache.bcel.classfile.ModuleMainClass;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +23,12 @@ public class AuthController {
     private final AuthenticationProvider authenticationProvider;
     private final JwtTokenProvider jwtTokenProvider;
     private final ModelMapper mapper;
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/test")
+    public String test(){
+        return "Ok";
+    }
 
     @PostMapping("login")
     public ResponseEntity login(@Valid @RequestBody AuthRequest request) {
