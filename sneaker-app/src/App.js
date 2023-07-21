@@ -1,18 +1,18 @@
 import "./App.css";
 import { useEffect } from "react";
-import Home from "./components/home";
+import HomePage from "./pages/HomePage";
 import { Helmet } from "react-helmet";
 
 function App() {
-  useEffect(() => {
-    fetch("http://localhost:8080/api/public/test")
-      .then((response) => response.text())
-      .then((data) => console.log(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/api/public/test")
+  //     .then((response) => response.text())
+  //     .then((data) => console.log(data));
+  // }, []);
 
   return (
     <div>
-      <Home></Home>
+      <HomePage></HomePage>
       <Helmet>
         <script src="js/vendor/jquery-1.12.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
