@@ -8,7 +8,21 @@ let productView = (productTop) => {
   return list
 }
 
+let fun1 = async () => {
+  for(let i = 0; i < 100; i++){
+    console.log("fun1: ", i)
+  }
+}
+
+let fun2 = async () => {
+  for(let i = 0; i < 100; i++){
+    console.log("fun2: ", i)
+  }
+}
+
 function ProductTop({list: productTop}) {
+  fun1()
+  fun2()
   return (
     <div className="col-sm-9">
       <div className="row">

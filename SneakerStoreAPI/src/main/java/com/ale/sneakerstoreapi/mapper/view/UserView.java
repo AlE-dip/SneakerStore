@@ -18,13 +18,15 @@ public class UserView {
     private String username;
     private User.Role role;
     private String accessToken;
+    private String token;
 
-    public static UserView newInstance(UserInfo userInfo, String accessToken) {
+    public static UserView newInstance(UserInfo userInfo, String accessToken, String token) {
         return new UserView().builder()
                 .uuid(userInfo.getUser().getUuid())
                 .username(userInfo.getUsername())
                 .role(userInfo.getUser().getRole())
                 .accessToken(accessToken)
+                .token(token)
                 .build();
     }
 }

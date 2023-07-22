@@ -1,4 +1,4 @@
-package com.ale.sneakerstoreapi.mapper.view;
+package com.ale.sneakerstoreapi.mapper.input;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

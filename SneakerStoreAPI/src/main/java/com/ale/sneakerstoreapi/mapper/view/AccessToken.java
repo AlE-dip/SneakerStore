@@ -1,12 +1,14 @@
-package com.ale.sneakerstoreapi.util.exception;
+package com.ale.sneakerstoreapi.mapper.view;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppException extends RuntimeException{
-    private String message;
+public class AccessToken {
+    private String accessToken;
 }
