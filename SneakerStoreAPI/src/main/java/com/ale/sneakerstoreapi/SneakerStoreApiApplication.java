@@ -5,6 +5,9 @@ import com.ale.sneakerstoreapi.service.ProductDetailService;
 import com.ale.sneakerstoreapi.service.ProductService;
 import com.ale.sneakerstoreapi.service.ProductSizeService;
 import com.ale.sneakerstoreapi.service.UserService;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +39,16 @@ public class SneakerStoreApiApplication {
 							.build()
 			);
 		}
+
+//		Observable<String> observable = Observable.fromCallable(() -> {
+//			Thread.sleep(3000);
+//			return "hear";
+//		});
+//		observable.subscribeOn(Schedulers.io());
+//		observable.subscribe(s -> System.out.println(s));
+//		System.out.println("tear");
+
+
 
 	}
 

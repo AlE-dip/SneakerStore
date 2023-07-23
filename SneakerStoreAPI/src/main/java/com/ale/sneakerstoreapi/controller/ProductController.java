@@ -21,13 +21,15 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
+    @RolesAllowed({User.Role.Fields.ADMIN, User.Role.Fields.CUSTOMER})
     @ResponseStatus(HttpStatus.OK)
-    public List getProducts(@Valid QueryRequest queryRequest) {
+    public List getProducts(@Valid QueryRequest queryRequest) throws InterruptedException {
         List<ProductView> products = productService.findAll(queryRequest);
         return products;
     }
 
     @GetMapping("/{productCode}")
+    @RolesAllowed({User.Role.Fields.ADMIN, User.Role.Fields.CUSTOMER})
     @ResponseStatus(HttpStatus.OK)
     public ProductView getProduct(@PathVariable String productCode) {
         ProductView product = productService.getByProductCode(productCode);
