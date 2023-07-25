@@ -32,7 +32,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
-	implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

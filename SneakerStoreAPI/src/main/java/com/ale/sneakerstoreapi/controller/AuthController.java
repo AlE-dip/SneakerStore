@@ -11,6 +11,8 @@ import com.ale.sneakerstoreapi.service.RefreshTokenService;
 import com.ale.sneakerstoreapi.util.exception.AppException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
