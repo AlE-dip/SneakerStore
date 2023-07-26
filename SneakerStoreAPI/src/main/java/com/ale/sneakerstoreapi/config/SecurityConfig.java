@@ -9,6 +9,7 @@ import com.ale.sneakerstoreapi.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -26,6 +27,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.Arrays;
 
 @Configuration
+@EnableAsync
 @EnableWebSecurity
 @EnableMethodSecurity(
         securedEnabled = true,

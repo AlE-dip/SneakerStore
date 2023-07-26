@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletionException;
 
 @RestControllerAdvice
 public class AppExceptionHandler {
@@ -47,6 +48,15 @@ public class AppExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ AppException.class})
     public Map<String, String> handleAppException(AppException e) {
+        e.printStackTrace();
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", e.getMessage());
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({ CompletionException.class})
+    public Map<String, String> handleCompletionException(CompletionException e) {
         e.printStackTrace();
         Map<String, String> errors = new HashMap<>();
         errors.put("message", e.getMessage());
