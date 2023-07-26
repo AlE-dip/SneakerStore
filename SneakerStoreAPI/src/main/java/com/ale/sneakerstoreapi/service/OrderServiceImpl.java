@@ -6,7 +6,7 @@ import com.ale.sneakerstoreapi.entity.ProductSize;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.OrderInput;
 import com.ale.sneakerstoreapi.mapper.input.OrderOwner;
-import com.ale.sneakerstoreapi.mapper.view.OrderView;
+import com.ale.sneakerstoreapi.mapper.view.order.OrderView;
 import com.ale.sneakerstoreapi.repository.OrderRepository;
 import com.ale.sneakerstoreapi.util.MessageContent;
 import com.ale.sneakerstoreapi.util.UtilContent;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

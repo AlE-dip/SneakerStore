@@ -4,7 +4,7 @@ import com.ale.sneakerstoreapi.entity.Product;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.ProductInput;
 import com.ale.sneakerstoreapi.mapper.update.ProductUpdate;
-import com.ale.sneakerstoreapi.mapper.view.ProductView;
+import com.ale.sneakerstoreapi.mapper.view.product.ProductView;
 
 import java.util.List;
 

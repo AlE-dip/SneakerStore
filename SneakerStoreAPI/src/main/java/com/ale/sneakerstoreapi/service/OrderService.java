@@ -4,9 +4,7 @@ import com.ale.sneakerstoreapi.entity.Order;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.OrderInput;
 import com.ale.sneakerstoreapi.mapper.input.OrderOwner;
-import com.ale.sneakerstoreapi.mapper.view.OrderView;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.ale.sneakerstoreapi.mapper.view.order.OrderView;
 
 import java.util.List;
 

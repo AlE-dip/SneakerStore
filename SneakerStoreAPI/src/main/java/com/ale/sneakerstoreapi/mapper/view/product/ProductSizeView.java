@@ -1,19 +1,19 @@
-package com.ale.sneakerstoreapi.mapper.view;
+package com.ale.sneakerstoreapi.mapper.view.product;
 
 import com.ale.sneakerstoreapi.entity.ProductSize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.modelmapper.ModelMapper;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductSizeView {
-    private Long id;
-    private ProductSize.Size size;
+public class ProductSizeView extends ProductSizeShortView{
+
     private int inventory;
     private double price;
 

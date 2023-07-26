@@ -1,9 +1,6 @@
-package com.ale.sneakerstoreapi.mapper.view;
+package com.ale.sneakerstoreapi.mapper.view.order;
 
 import com.ale.sneakerstoreapi.entity.Order;
-import com.ale.sneakerstoreapi.mapper.input.OrderDetailInput;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
