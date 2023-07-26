@@ -16,11 +16,14 @@ import java.util.List;
 public class OrderView {
     private String orderNumber;
     private double total;
-    private List<OrderDetailView> orderDetails;
     private String userUuid;
+    private String approveUrl;
+    private Order.PaymentStatus paymentStatus;
+    private List<OrderDetailView> orderDetails;
 
     public static OrderView newInstance(Order order, ModelMapper mapper){
         OrderView orderView = mapper.map(order, OrderView.class);
+        orderView.userUuid = order.getUser().getUuid().toString();
         return orderView;
     }
 }

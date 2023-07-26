@@ -1,5 +1,6 @@
 package com.ale.sneakerstoreapi.mapper.view.order;
 
+import com.ale.sneakerstoreapi.entity.Order;
 import com.ale.sneakerstoreapi.entity.OrderDetail;
 import com.ale.sneakerstoreapi.entity.ProductDetail;
 import com.ale.sneakerstoreapi.entity.ProductSize;
@@ -21,11 +22,8 @@ public class OrderDetailView {
 
     private Long id;
     private ProductShortView product;
-
     private ProductDetailShortView productDetail;
-
     private ProductSizeShortView productSize;
-
     private int quantity;
     private double price;
     private double discount;

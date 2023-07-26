@@ -17,9 +17,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -30,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private ProductDetailService productDetailService;
     private ProductSizeService productSizeService;
     private OrderDetailService orderDetailService;
+    private PaypalService paypalService;
     private UserService userService;
     private ModelMapper mapper;
 
@@ -62,9 +65,15 @@ public class OrderServiceImpl implements OrderService {
             total.updateAndGet(v -> (v + (detailPrice - (detailPrice * product.getDiscount() / 100))));
         });
 
-        order.setTotal(total.get());
+        order.setTotal(String.format("%.2f", total.get()));
         order.setOrderNumber(UtilContent.ORDER_NUMBER_FORMAT + System.currentTimeMillis());
         order.setUser(userService.findById(order.getUser().getUuid()));
+
+        try {
+            paypalService.createOrder(order).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
         orderRepository.save(order);
 

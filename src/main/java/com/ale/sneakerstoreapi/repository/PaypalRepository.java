@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PaypalRepository extends JpaRepository<Paypal, Long> {
-    Optional<Paypal> getFirstByClientId(String clientId);
+    Optional<Paypal> findFirstByClientId(String clientId);
+    Optional<Paypal> findFirstByOrderByIdAsc();
 }

@@ -10,7 +10,9 @@ public class MessageContent {
     public final static String DOES_NOT_PERMISSION = "doesn't permission";
     public final static String EXECUTE_SUCCESS = "execute success";
     public final static String EXECUTE_FAILED = "execute failed";
+    public final static String PAYPAL_ACCOUNT_NOT_FOUND = "paypal account not found";
 
     //Status code
     public final static int SUCCESS = 200;
+    public final static int CREATED = 201;
 }
