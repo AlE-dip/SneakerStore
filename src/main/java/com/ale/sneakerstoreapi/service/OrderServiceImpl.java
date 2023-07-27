@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.http.HttpRequest;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -68,12 +69,9 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(String.format("%.2f", total.get()));
         order.setOrderNumber(UtilContent.ORDER_NUMBER_FORMAT + System.currentTimeMillis());
         order.setUser(userService.findById(order.getUser().getUuid()));
+        order.setDate(Instant.now());
 
-        try {
-            paypalService.createOrder(order).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        paypalService.createOrder(order).join();
 
         orderRepository.save(order);
 
@@ -100,5 +98,21 @@ public class OrderServiceImpl implements OrderService {
             throw new AppException(MessageContent.DOES_NOT_PERMISSION);
         }
         return optional.get();
+    }
+
+    @Override
+    public OrderView captureOrder(String orderNumber, OrderOwner orderOwner) {
+        AtomicReference<Order> reference = new AtomicReference<>();
+        orderRepository.findFirstByOrderNumber(UUID.fromString(orderOwner.getUuid()), orderNumber).ifPresentOrElse(order -> {
+            if(order.getPaymentStatus() != Order.PaymentStatus.NEW && order.getPaymentStatus() != Order.PaymentStatus.FAILED) {
+                throw new AppException(MessageContent.EXECUTE_FAILED);
+            }
+            paypalService.captureOrder(order).join();
+            orderRepository.save(order);
+            reference.set(order);
+        }, () -> {
+            throw new AppException(MessageContent.EXECUTE_FAILED);
+        });
+        return OrderView.newInstance(reference.get(), mapper);
     }
 }

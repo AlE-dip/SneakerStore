@@ -13,4 +13,5 @@ public interface OrderService {
     List<OrderView> findAll(QueryRequest queryRequest, OrderOwner orderOwner);
     OrderView getByOrderNumber(String orderNumber, OrderOwner orderOwner);
     Order findByOrderNumber(String orderNumber, OrderOwner orderOwner);
+    OrderView captureOrder(String orderNumber, OrderOwner orderOwner);
 }

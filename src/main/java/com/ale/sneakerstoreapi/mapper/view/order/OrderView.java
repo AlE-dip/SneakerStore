@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -17,6 +18,7 @@ public class OrderView {
     private String orderNumber;
     private double total;
     private String userUuid;
+    private Instant date;
     private String approveUrl;
     private Order.PaymentStatus paymentStatus;
     private List<OrderDetailView> orderDetails;

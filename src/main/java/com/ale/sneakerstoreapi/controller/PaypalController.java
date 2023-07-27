@@ -1,6 +1,8 @@
 package com.ale.sneakerstoreapi.controller;
 
+import com.ale.sneakerstoreapi.entity.Order;
 import com.ale.sneakerstoreapi.entity.User;
+import com.ale.sneakerstoreapi.mapper.input.OrderOwner;
 import com.ale.sneakerstoreapi.mapper.input.PaypalInput;
 import com.ale.sneakerstoreapi.service.PaypalService;
 import com.ale.sneakerstoreapi.util.MessageContent;

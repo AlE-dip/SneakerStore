@@ -3,6 +3,7 @@ package com.ale.sneakerstoreapi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Order {
     private String paypalOrderId;
     private String orderNumber;
     private String total;
-    private Date date;
+    private Instant date;
     private PaymentStatus paymentStatus;
     private String captureId;
     private String approveUrl;

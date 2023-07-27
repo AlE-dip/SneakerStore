@@ -1,5 +1,6 @@
 package com.ale.sneakerstoreapi.controller;
 
+import com.ale.sneakerstoreapi.entity.Order;
 import com.ale.sneakerstoreapi.entity.User;
 import com.ale.sneakerstoreapi.mapper.QueryRequest;
 import com.ale.sneakerstoreapi.mapper.input.OrderInput;
@@ -46,5 +47,14 @@ public class OrderController {
     public OrderView createOrder(@Valid @RequestBody OrderInput orderInput){
         OrderView orderView = orderService.create(orderInput);
         return orderView;
+    }
+
+    @PutMapping("/capture/{orderNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderView captureOrder(
+            @PathVariable String orderNumber,
+            @Valid @RequestBody OrderOwner orderOwner
+    ) {
+        return orderService.captureOrder(orderNumber, orderOwner);
     }
 }
