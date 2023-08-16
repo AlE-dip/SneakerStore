@@ -1,10 +1,7 @@
 package com.ale.sneakerstoreapi;
 
 import com.ale.sneakerstoreapi.entity.User;
-import com.ale.sneakerstoreapi.service.ProductDetailService;
-import com.ale.sneakerstoreapi.service.ProductService;
-import com.ale.sneakerstoreapi.service.ProductSizeService;
-import com.ale.sneakerstoreapi.service.UserService;
+import com.ale.sneakerstoreapi.service.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

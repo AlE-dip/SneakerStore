@@ -1,16 +1,14 @@
 package com.ale.sneakerstoreapi.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +23,9 @@ public class User {
     private String username;
     private String password;
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     @FieldNameConstants(onlyExplicitlyIncluded = true)
     public enum Role {
